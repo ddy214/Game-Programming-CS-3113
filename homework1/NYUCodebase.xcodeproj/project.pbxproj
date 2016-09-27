@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		50AA60D41D99734300341495 /* playerShip1_blue.png in Resources */ = {isa = PBXBuildFile; fileRef = 50AA60D31D99734300341495 /* playerShip1_blue.png */; };
+		50AA60D61D99941F00341495 /* playerShip2_red.png in Resources */ = {isa = PBXBuildFile; fileRef = 50AA60D51D99941E00341495 /* playerShip2_red.png */; };
+		50AA60D81D99942400341495 /* playerShip3_orange.png in Resources */ = {isa = PBXBuildFile; fileRef = 50AA60D71D99942300341495 /* playerShip3_orange.png */; };
 		6D5A86AE19AE5C710066C1FD /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D5A86AD19AE5C710066C1FD /* Cocoa.framework */; };
 		6D5A86B819AE5C710066C1FD /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6D5A86B619AE5C710066C1FD /* InfoPlist.strings */; };
 		6D5A86BA19AE5C710066C1FD /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6D5A86B919AE5C710066C1FD /* main.cpp */; };
@@ -24,6 +27,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		50AA60D31D99734300341495 /* playerShip1_blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = playerShip1_blue.png; sourceTree = "<group>"; };
+		50AA60D51D99941E00341495 /* playerShip2_red.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = playerShip2_red.png; sourceTree = "<group>"; };
+		50AA60D71D99942300341495 /* playerShip3_orange.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = playerShip3_orange.png; sourceTree = "<group>"; };
 		6D5A86AA19AE5C710066C1FD /* NYUCodebase.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NYUCodebase.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6D5A86AD19AE5C710066C1FD /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		6D5A86B019AE5C710066C1FD /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -149,8 +155,11 @@
 				6DC707691BA7273500225B7D /* vertex_textured.glsl */,
 				6DEF23BC1B96CC2600BCE792 /* Matrix.cpp */,
 				6DEF23BD1B96CC2600BCE792 /* Matrix.h */,
+				50AA60D51D99941E00341495 /* playerShip2_red.png */,
 				6DEF23BE1B96CC2600BCE792 /* ShaderProgram.cpp */,
+				50AA60D71D99942300341495 /* playerShip3_orange.png */,
 				6DEF23BF1B96CC2600BCE792 /* ShaderProgram.h */,
+				50AA60D31D99734300341495 /* playerShip1_blue.png */,
 				6DEF23C01B96CC2600BCE792 /* vertex.glsl */,
 				6D5A86B919AE5C710066C1FD /* main.cpp */,
 			);
@@ -210,12 +219,15 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				50AA60D41D99734300341495 /* playerShip1_blue.png in Resources */,
+				50AA60D61D99941F00341495 /* playerShip2_red.png in Resources */,
 				6D5A86B819AE5C710066C1FD /* InfoPlist.strings in Resources */,
 				6DEF23C11B96CC2600BCE792 /* fragment.glsl in Resources */,
 				6DE9D2F11BA6AB8C002D599C /* fragment_textured.glsl in Resources */,
 				6D5A86C619AE5C710066C1FD /* Images.xcassets in Resources */,
 				6D5A86BE19AE5C710066C1FD /* Credits.rtf in Resources */,
 				6DEF23C41B96CC2600BCE792 /* vertex.glsl in Resources */,
+				50AA60D81D99942400341495 /* playerShip3_orange.png in Resources */,
 				6DC7076A1BA7273500225B7D /* vertex_textured.glsl in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
