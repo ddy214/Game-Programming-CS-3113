@@ -146,17 +146,15 @@ void Update(){
     
     else if(ball.x + ball.width/2 > (player2.x-player2.width/2) &&  (ball.y - ball.height/2  < (player2.y + player2.height/2) && ball.y + ball.height/2 > (player2.y - player2.height/2))){
         ball.x_velocity *= ballVelo;
-        std::cout << ball.x_velocity << std::endl;
         ball.x += elapsed*ball.x_velocity;
     }
     
     else if(ball.x - ball.width/2 < (player1.x+player1.width/2) &&  (ball.y - ball.height/2  < (player1.y + player1.height/2) && ball.y + ball.height/2 > (player1.y - player1.height/2))){
         ball.x_velocity *= ballVelo;
-        std::cout << ball.x_velocity << std::endl;
         ball.x += elapsed*ball.x_velocity;
     }
     
-    else if(ball.y + ball.height/2 > 1.85 || ball.y-ball.height/2 < -1.85){
+    else if(ball.y + ball.height/2 > 1.80 || ball.y-ball.height/2 < -1.80){
         ball.y_velocity *= ballVelo;
         ball.y += ball.y_velocity * elapsed;
     }
