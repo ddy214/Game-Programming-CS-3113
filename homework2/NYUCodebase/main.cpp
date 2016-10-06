@@ -223,6 +223,17 @@ void Render(){
     glDrawArrays(GL_TRIANGLES, 0, 6);
     glDisableVertexAttribArray(program->positionAttribute);
     
+    program->setModelMatrix(modelMatrix);
+    //Create middle line
+    float startingPoint = 2.0f;
+    for(int i = 0; i < 15; i++){
+        float lineSquare[] = {-0.1, startingPoint-0.2f, 0.1, startingPoint-0.2f, 0.1, startingPoint, -0.1, startingPoint-0.2f, 0.1, startingPoint, -0.1, startingPoint};
+        startingPoint-=0.3;    glVertexAttribPointer(program->positionAttribute, 2, GL_FLOAT, false, 0, lineSquare);
+        glEnableVertexAttribArray(program->positionAttribute);
+        glDrawArrays(GL_TRIANGLES, 0, 6);
+        glDisableVertexAttribArray(program->positionAttribute);
+        
+    }
     
     SDL_GL_SwapWindow(displayWindow);
     
