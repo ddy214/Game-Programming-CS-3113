@@ -142,6 +142,7 @@ void Update(){
         ball.x = 0;
         ball.y = 0;
         ball.x_velocity*= ballVelo;
+        
     }
     
     else if(ball.x + ball.width/2 > (player2.x-player2.width/2) &&  (ball.y - ball.height/2  < (player2.y + player2.height/2) && ball.y + ball.height/2 > (player2.y - player2.height/2))){

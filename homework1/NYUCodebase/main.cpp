@@ -86,7 +86,7 @@ int main(int argc, char *argv[])
         
         glBindTexture(GL_TEXTURE_2D, shipTexture);
         
-        float ship1Vert[] = {-2.5, -0.5, -1.5, -0.5, -1.5, 0.5, -2.5, -0.5, -1.5, 0.5, -2.5, 0.5};
+        float ship1Vert[] = {-1.5, -0.25, -1.0, -0.25, -1.0, 0.25, -1.5, -0.25, -1.0, 0.25, -1.5, 0.25};
         
         glVertexAttribPointer(program.positionAttribute, 2, GL_FLOAT, false, 0, ship1Vert);
         
