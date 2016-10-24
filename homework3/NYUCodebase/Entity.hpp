@@ -14,11 +14,14 @@
 #include "SheetSprite.hpp"
 #include "Matrix.h"
 
+enum EntityType {ALIEN, PLAYER, ALIEN_MISSILE, PLAYER_MISSILE};
+
+
 class Entity {
 public:
     Entity();
     
-    Entity(float x, float y, const SheetSprite& sheet);
+    Entity(float x, float y, const SheetSprite& sheet, int entity_type);
     
     void Update(float elapsed);
     
@@ -32,9 +35,15 @@ public:
     float height;
     float x;
     float y;
-    float velocity_x;
-    float velocity_y;
+    float velocity_x=0;
+    float velocity_y=0;
     Matrix modelMatrix;
+    int entity_type;
+    float totalTimeElapsed=0;
+    bool collidedTop;
+    bool collidedBottom;
+    bool collidedLeft;
+    bool collidedRight;
     
 };
 

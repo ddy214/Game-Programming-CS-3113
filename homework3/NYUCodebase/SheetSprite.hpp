@@ -18,6 +18,10 @@ class SheetSprite{
     SheetSprite(unsigned int textureID, float u, float v, float width, float height, float size);
     void Draw(ShaderProgram * program);
     
+    float getWidth();
+    
+    float getHeight();
+    
     float size;
     unsigned int textureID;
     float u;

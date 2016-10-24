@@ -10,13 +10,15 @@
 
 void SheetSprite::Draw(ShaderProgram * program){
     glBindTexture(GL_TEXTURE_2D, textureID);
-    
+//    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,GL_CLAMP);
+//     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T,GL_CLAMP);
+    //std::cout<<width<<height;
     GLfloat textCoords[] = {
         u, v+height,
         u+width, v,
         u, v,
         u+width, v,
-        u, v+height,
+        u, v+height,//
         u+width, v + height
     };
     
@@ -31,6 +33,8 @@ void SheetSprite::Draw(ShaderProgram * program){
         0.5f * size * aspect, -0.5f * size
     };
     
+    //std::cout<<(vertices);
+    
     glVertexAttribPointer(program->positionAttribute, 2, GL_FLOAT, false, 0, vertices);
     glEnableVertexAttribArray(program->positionAttribute);
     glVertexAttribPointer(program->texCoordAttribute, 2, GL_FLOAT, false, 0, textCoords);
@@ -41,8 +45,16 @@ void SheetSprite::Draw(ShaderProgram * program){
     
 }
 
-SheetSprite::SheetSprite(unsigned int textureID, float u, float v, float width, float height, float size){
-    
+float SheetSprite::getWidth(){
+    return size*(width/height)*0.5f;
+}
+
+float SheetSprite::getHeight(){
+    return size*0.5f;
+}
+
+SheetSprite::SheetSprite(unsigned int textureID, float u, float v, float width, float height, float size):textureID(textureID),u(u), v(v), width(width), height(height), size(size){
+    //std::cout<<width;
 }
 
 SheetSprite::SheetSprite(){

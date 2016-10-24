@@ -28,10 +28,20 @@ Matrix modelMatrix;
 Matrix viewMatrix;
 ShaderProgram * program;
 Entity * ship;
-std::vector<Entity> enemies;
+std::vector<Entity*> enemies;
+std::vector<Entity*> enemyMissiles;
+std::vector<Entity*> playerMissiles;
+Entity* firedMissile;
 bool done = false;
+float lastFrameTicks = 0;
 GLuint letterTextures;
-GLuint shipTextures;
+float missileCounter = 0;
+float missileTimer = 0;
+int missileNum = 0;
+std::vector<int> firingAliens = {18,19,20,21,22,23};
+
+
+
 
 GLuint LoadTexture(const char *image_path);
 
@@ -84,12 +94,32 @@ int main(int argc, char *argv[])
 void Setup(){
     glViewport(0, 0, 640, 360);
     program = new ShaderProgram(RESOURCE_FOLDER"vertex_textured.glsl", RESOURCE_FOLDER"fragment_textured.glsl");
-    projectionMatrix.setOrthoProjection(-5.33f, 5.33f, -3.0f, 3.0f, -1.0f, 1.0f);
+    projectionMatrix.setOrthoProjection(-3.55f, 3.55f, -2.0f, 2.0f, -1.0f, 1.0f);
     glUseProgram(program->programID);
-    letterTextures = LoadTexture("font1.png");
-    shipTextures = LoadTexture("sheet.png");
-    SheetSprite shipSprite(shipTextures, 211.0f/1024.0f, 941.0f/1024.0f, 99.0f/1024.0f, 75.0f/1024.0f,0.2);
-    ship = new Entity(0, 0, shipSprite);
+   letterTextures = LoadTexture("font1.png");
+    GLuint shipTextures = LoadTexture("sheet.png");
+    
+    SheetSprite shipSprite(shipTextures, 325.0f/1024.0f, 0.0f/1024.0f, 98.0f/1024.0f, 75.0f/1024.0f,0.4);
+    SheetSprite enemySprite(shipTextures, 425.0f/1024.0f,384.0f/1024.0f, 93.0f/1024.0f, 84.0f/1024.0f,0.4);
+    SheetSprite enemyMissileSprite(shipTextures,843.0f/1024.0f, 62.0f/1024.0f,13.0f/1024.0f, 54.0f/1024.0f, 0.2);
+    SheetSprite playerMissileSprite(shipTextures,843.0f/1024.0f, 62.0f/1024.0f,13.0f/1024.0f, 54.0f/1024.0f, 0.2);
+    ship = new Entity(0, -1.75, shipSprite, PLAYER);
+    
+    for(int i = 1; i < 5; i++){
+        for (int j = 1; j < 7; j++){
+            Entity* newEntity = new Entity(-3.55 + (0.74*j), 2.10+(-0.60 * i), enemySprite, ALIEN );
+            newEntity->velocity_x = 4;
+            enemies.push_back(newEntity);
+        }
+    }
+    
+    for(int i = 0; i < 30; i++){
+        Entity* enemyMissile = new Entity(-2000.0, 3.0, enemyMissileSprite, ALIEN_MISSILE );
+        Entity* playerMissile = new Entity(-2000, .5, playerMissileSprite, PLAYER_MISSILE );
+        enemyMissiles.push_back(enemyMissile);
+        playerMissiles.push_back(playerMissile);
+        
+    }
     
 }
 void ProcessEventsIntro(){
@@ -107,24 +137,41 @@ void ProcessEventsIntro(){
 
 void ProcessEventsGame(){
     const Uint8 * keys = SDL_GetKeyboardState(NULL);
-    while(SDL_PollEvent(&event)){
-        if(event.type == SDL_QUIT|| event.type == SDL_WINDOWEVENT_CLOSE) {
+    while(SDL_PollEvent(&event)){         if(event.type == SDL_QUIT|| event.type == SDL_WINDOWEVENT_CLOSE) {
             done = true;
         }
         else if (event.type == SDL_KEYDOWN){
             if(event.key.keysym.scancode == SDL_SCANCODE_SPACE){
-                
+                if(!firedMissile){
+                    Entity * bullet = playerMissiles[playerMissiles.size()-1];
+                    playerMissiles.pop_back();
+                    bullet->x = ship->x;
+                    bullet->y = ship->y+0.20;
+                    bullet->velocity_y = 4.0;
+                    firedMissile = bullet;
+                }
+            }
+        }
+        
+        else if (event.type == SDL_KEYUP){
+            if(event.key.keysym.scancode == SDL_SCANCODE_LEFT){
+                ship->velocity_x = 0;
+            }
+            else if(event.key.keysym.scancode == SDL_SCANCODE_RIGHT){
+                ship->velocity_x = 0;
             }
         }
     }
     
     if(keys[SDL_SCANCODE_RIGHT]){
-        
+        ship->velocity_x = 1.0;
     }
     
     else if(keys[SDL_SCANCODE_LEFT]){
-        
+        ship->velocity_x = -1.0;
     }
+    
+    
 }
 
 void ProcessEvents(){
@@ -139,10 +186,101 @@ void ProcessEvents(){
 }
 
 void UpdateIntro(){
-    
+    float ticks = (float) SDL_GetTicks()/1000;
+    lastFrameTicks = ticks;
 }
 
 void UpdateGame(){
+    float ticks = (float) SDL_GetTicks()/1000;
+    float elapsed = ticks - lastFrameTicks;
+    bool collidedWithShip = false;
+    lastFrameTicks = ticks;
+    ship->Update(elapsed);
+    for(int i = 0; i < enemies.size(); i++){
+        if(enemies[i]){
+            enemies[i]->Update(elapsed);
+        }
+    }
+    if(firedMissile){
+        firedMissile->Update(elapsed);
+        for(int i = 0; i < enemies.size(); i++){
+            if(firedMissile->collidesWith(enemies[i])){
+                delete firedMissile;
+                firedMissile = nullptr;
+                delete enemies[i];
+                enemies[i] = nullptr;
+                collidedWithShip = true;
+                break;
+            }
+        }
+        if(!collidedWithShip){
+            if(firedMissile->collidesWith(nullptr)){
+                delete firedMissile;
+                firedMissile = nullptr;
+            }
+        }
+    }
+    
+    ship->collidesWith(nullptr);
+    for(int i = 0; i < enemies.size(); i++){
+        if(enemies[i] != nullptr){
+            if(enemies[i]->collidesWith(nullptr)){
+                for(int i = 0; i < enemies.size(); i++){
+                    if(enemies[i]){
+                        enemies[i]->velocity_x *= -1.0;
+                    //enemies[i]->y += -0.005;
+                    }
+                }
+                break;
+            }
+        }
+    }
+    missileCounter += elapsed;
+    if(missileCounter >= 1.0){
+        
+        missileCounter = 0;
+    }
+    
+    for(int i = 0; i < firingAliens.size(); i++){
+        if(firingAliens[i] >= 0){
+            if(enemies[firingAliens[i]] == nullptr){
+                firingAliens[i] -= 6;
+            }
+            
+        }
+    }
+    missileTimer += elapsed;
+    int randomIndex = rand() % firingAliens.size();
+    if(missileTimer >= 2){
+        int alienFire = firingAliens[randomIndex];
+        if(alienFire >= 0){
+            enemyMissiles[missileNum]->x = enemies[alienFire]->x;
+            enemyMissiles[missileNum]->y = enemies[alienFire]->y;
+            enemyMissiles[missileNum]->velocity_y = -1.0;
+            missileTimer = 0;
+        }
+    }
+    
+    for(int i = 0; i < enemyMissiles.size();i++){
+        if(enemyMissiles[i]->collidesWith(ship)){
+            std::cout<<"crashed";
+        }
+        
+        else if(firedMissile != nullptr){
+            if(enemyMissiles[i]->collidesWith(firedMissile)){
+                std::cout<<"crashed missile";
+            }
+        }
+    }
+    
+
+
+    for(int i = 0; i < enemyMissiles.size(); i++){
+        enemyMissiles[i]->Update(elapsed);
+    }
+    
+    
+    
     
 }
 
@@ -159,13 +297,31 @@ void Update(){
 
 void RenderIntro(){
     modelMatrix.identity();
+    modelMatrix.Translate(-3.2, 0.5, 0);
     program->setModelMatrix(modelMatrix);
     std::string welcome = "Welcome to Space Invaders";
-    DrawText(program, letterTextures, welcome, .5f, 0.05f);
+    DrawText(program, letterTextures, welcome, 0.25f, 0.015f);
+    modelMatrix.identity();
+    modelMatrix.Translate(-2.45, -0.5, 0);
+    program->setModelMatrix(modelMatrix);
+    std::string pressSpace = "Press Space to Play";
+    DrawText(program, letterTextures, pressSpace, 0.25f, 0.015f);
 }
 
 void RenderGame(){
     ship->Render(program);
+    for(int i = 0; i < enemies.size(); i++){
+        if(enemies[i]){
+            enemies[i]->Render(program);
+        }
+    }
+    if(firedMissile){
+        firedMissile->Render(program);
+    }
+    
+    for(int i = 0; i < enemyMissiles.size(); i++){
+        enemyMissiles[i]->Render(program);
+    }
 }
 
 void Render(){
