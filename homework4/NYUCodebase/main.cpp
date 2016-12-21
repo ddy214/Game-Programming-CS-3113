@@ -100,7 +100,7 @@ void checkForCollission(Entity *  entity){
 }
 
 void Setup(){
-    levelLoader = new LevelLoader("Homework3.txt", 16, 8);
+    levelLoader = new LevelLoader("NYUCodebase.app/Contents/Resources/Homework3.txt", 16, 8);
     glViewport(0, 0, 640, 360);
     program = new ShaderProgram(RESOURCE_FOLDER"vertex_textured.glsl", RESOURCE_FOLDER"fragment_textured.glsl");
     projectionMatrix.setOrthoProjection(-4.0f, 4.0f, -2.25f, 2.25f, -4.5f, 4.5f);

@@ -10,7 +10,6 @@
 #define Entity_hpp
 
 #include <stdio.h>
-#include "ShaderProgram.h"
 #include "SheetSprite.hpp"
 //#include "SheetSprite.hpp"
 
